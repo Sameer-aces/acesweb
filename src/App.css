@@ -140,9 +140,24 @@
   border-radius: 10px;
   padding: 10px;
 }
+.teamDataModalStyles {
+  background-color: #ffffff;
+  width: auto;
+  height: 600px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+}
 .modalInput {
   border: 1px solid black;
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 3px;
   margin: 3px;
 }
@@ -182,4 +197,17 @@ tr {
   border-right: 1px solid black;
   padding: 12px;
   height: 0px;
+}
+.userDataBtn {
+  width: auto;
+  height: 40px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #1a73e8;
+  color: #fff;
+
+}
+.userDataBtn:hover{
+  color: #c4c4c4;
 }

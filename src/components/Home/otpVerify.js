@@ -1,7 +1,19 @@
-import React, { Component } from "react";
+import axios from "axios";
+import React, { Component, useContext } from "react";
+import { GlobalContext } from "../../GlobalProvider";
 const otpVerify = () => {
+  const { email } = useContext(GlobalContext);
   const handleSubmitOtp = () => {
-    console.log("first");
+    axios
+      .post("https://aces-hackathon.onrender.com/api/verifyAdminlogin", otp)
+      .then((response) => {
+        setVerifyOtp(response.data.otp);
+        setBtn(false);
+        setError("");
+      })
+      .catch((response) => {
+        setError(response.response.data);
+      });
   };
   return (
     <>

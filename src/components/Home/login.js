@@ -1,37 +1,37 @@
-import React, { Component, useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../GlobalProvider";
 
 const Login = () => {
-  const [user, setUser] = useState({
-    email: "",
-  });
+  const { user, setUser, setEmail, email } = useContext(GlobalContext);
+  // const [user, setUser] = useState({
+  //   email: "",
+  // });
   const [verifyOtp, setVerifyOtp] = useState();
   const [otp, setOtp] = useState();
   const [btn, setBtn] = useState(true);
+  const [error, setError] = useState();
   let navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("handleSubmit");
     const userData = {
       email: user.email,
     };
     var x = document.getElementById("otp");
     var y = document.getElementById("loginBtn");
 
-    console.log(userData);
-    axios.post("http://localhost:5000/api/login", userData).then((res) => {
-      console.log(res.data.otp);
-      setVerifyOtp(res.data.otp);
-      setBtn(false);
-      // if (x.style.display === "none") {
-      //   x.style.display = "flex";
-      //   // y.style.display = "flex";
-      // } else {
-      //   x.style.display = "none";
-      //   // y.style.display = "none";
-      // }
-    });
+    axios
+      .post("https://aces-hackathon.onrender.com/api/Adminlogin", userData)
+      .then((response) => {
+        // setVerifyOtp(response.data.otp);
+        setEmail(response.data.email);
+        setBtn(false);
+        setError("");
+      })
+      .catch((response) => {
+        setError(response.response.data);
+      });
   };
 
   const handleChange = (e) => {
@@ -41,15 +41,30 @@ const Login = () => {
       [id]: value,
     });
   };
-  console.log(user);
   const handleVerifyChange = (e) => {
-    console.log("handleVerifyChange");
-    if (otp === verifyOtp) {
-      console.log("verified");
-      navigate("/dashboard");
-    } else {
-      alert("incorrect otp");
-    }
+    e.preventDefault();
+    const userDetails = {
+      email: email,
+      otp: otp,
+    };
+    axios
+      .post(
+        "https://aces-hackathon.onrender.com/api/verifyAdminlogin",
+        userDetails
+      )
+      .then((response) => {
+        const { token } = response.data;
+        localStorage.setItem("jwtToken", token);
+        navigate("/dashboard");
+      })
+      .catch((response) => {
+        setError(response.response.data);
+      });
+    // if (otp === verifyOtp) {
+    //   navigate("/dashboard");
+    // } else {
+    //   alert("incorrect otp");
+    // }
   };
   return (
     <>
@@ -64,7 +79,7 @@ const Login = () => {
             Login
           </h4>
         </div>
-        <form className="LoginForm" onSubmit={handleSubmit}>
+        <form className="LoginForm">
           {btn ? (
             <input
               className="formInput"
@@ -85,7 +100,13 @@ const Login = () => {
               placeholder="OTP"
             />
           )}
-
+          <p style={{ color: "red" }}>
+            {error && (
+              <>
+                <small>{error}</small>
+              </>
+            )}
+          </p>{" "}
           <div
             style={{
               display: "flex",
@@ -97,6 +118,7 @@ const Login = () => {
             {btn ? (
               <button
                 className="formBtn"
+                onClick={handleSubmit}
                 id="loginBtn"
                 style={{
                   width: "120px",

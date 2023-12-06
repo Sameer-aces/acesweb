@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { Component, useState } from "react";
 import logo from "../../images/logo.png";
+import b from "../../images/b.png";
 import { Link, NavLink } from "react-router-dom";
 
 import Modal from "react-modal";
 
 const Notification = () => {
   const [notifyModal, setNotifyModal] = useState();
+  const [teamData, setTeamData] = useState();
+
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
   const menuItem = [
@@ -25,10 +28,10 @@ const Notification = () => {
   ];
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("send notifiction");
     const notification = {
       appId: 15368,
       appToken: "ux61qbAfMOOHd6vFroOD7i",
+      image: b,
       title: title,
       body: body,
       dateSent: new Date().toLocaleString(),
@@ -39,48 +42,19 @@ const Notification = () => {
     setNotifyModal(false);
   };
   const closeModal = () => {
-    console.log("close");
     setNotifyModal(false);
   };
   const sendNotification = () => {
-    console.log("sss");
     setNotifyModal(true);
   };
   const getNotifications = () => {
-    console.log("getNotification");
+    setTeamData(true);
   };
   return (
     <>
-      <div className="MainDashboard">
-        <div className="sideBar">
-          <img
-            src={logo}
-            width={180}
-            height={40}
-            className="logo"
-            alt="Aceslogo"
-          />
-          <div className="sidebarlinks">
-            {menuItem.map((item, index) => (
-              <NavLink
-                to={item.path}
-                key={index}
-                className="link"
-                activeclassName="active"
-              >
-                <div className="icon">{item.icon}</div>
-                <div className="link_text">{item.name}</div>
-              </NavLink>
-            ))}
-          </div>
-        </div>
-        <div className="dashboardContent">
-          <button onClick={sendNotification} className="button">
-            Notification
-          </button>
-          <button onClick={getNotifications}>button</button>
-        </div>
-      </div>
+      <button onClick={sendNotification} className="button">
+        Notification
+      </button>
       <Modal
         isOpen={notifyModal}
         className="modalStyles"

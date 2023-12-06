@@ -1,9 +1,12 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Notification from "./notification";
 import UsersData from "./usersData";
 import logo from "../../images/logo.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
+import Modal from "react-modal";
 const Dashboard = () => {
+
+  let navigate = useNavigate();
   const menuItem = [
     {
       path: "/",
@@ -13,12 +16,16 @@ const Dashboard = () => {
       path: "/dashboard",
       name: "Dashboard",
     },
-    {
-      path: "/notification",
-      name: "Notification",
-    },
+    // {
+    //   path: "/notification",
+    //   name: "Notification",
+    // },
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem("jwtToken");
+    navigate("/");
+  };
   return (
     <>
       <div className="MainDashboard">
@@ -43,7 +50,24 @@ const Dashboard = () => {
               </NavLink>
             ))}
           </div>
+          <button
+            className="link"
+            activeclassName="active"
+            style={{
+              width: "185px",
+              cursor: "pointer",
+              color: "white",
+              transition: "all 0.1s",
+              background: "#213966",
+              marginTop: "57vh",
+              marginLeft: "5px",
+            }}
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </div>
+
         <div className="dashboardContent">
           <div>
             <UsersData />
